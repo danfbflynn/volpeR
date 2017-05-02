@@ -1,0 +1,107 @@
+---
+title: 'Volpe R Course: Session 5, Communicating Results'
+author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
+date: "5/11/2017"
+output:
+  beamer_presentation:
+    includes:
+      in_header: beamertemp.tex
+    incremental: no
+  ioslides_presentation:
+    incremental: no
+  slidy_presentation: default
+fontsize: 8pt
+colortheme: dolphin
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
+```
+
+
+## Overview 
+
+### Last session: Communicating results 
+
+- Basic graphics
+- `ggplot2` package
+- `Rmarkdown` introduction
+
+### Today: Data manipulation
+
+- Merging dataframe
+- Wide to long
+- Aggregating using `ddply`
+- Spatial data
+
+## Homework review: Loops
+Loop to generate random subsets of your data:
+
+```{r}
+# Get 10 samples of data from each species:
+sampx <- vector()
+for(i in levels(iris$Species)){
+  iris.sp.i <- iris[iris$Species == i,]
+  sampx <- rbind(sampx, iris.sp.i[sample(rownames(iris.sp.i), 10),])
+  }
+```
+
+Loop over rows in a data frame and perform some operation:
+```{r}
+# Subtract mean from each 
+means <- apply(iris[,1:4], 2, mean)
+newdat <- vector()
+for(i in 1:nrow(iris)){
+  newdat.x <- iris[i,1:4] - means
+  newdat <- rbind(newdat, data.frame(newdat.x, iris[i,5]))
+  }
+# Examine it: hist(newdat[,2]); hist(iris[,2])
+```
+
+## Homework review: Outliers
+
+Stats skill: test your data for outliers, using your models from Homework 2. 
+
+We will review `tripduration` outliers from the Hubway data.
+
+## Merging data frames
+
+`merge`
+
+`match`
+
+## Aggregating data
+
+`aggregate`
+
+`tapply`
+
+`apply`
+
+## Subsetting data
+
+`[]`
+
+
+## `ddply` 
+
+
+
+## `ddplyr` 
+
+## Regular expressions
+
+`grep`
+
+`regexpr`
+
+
+## Regular expressions
+
+## `match` and `which`
+
+## Merging data for spatial analysis
+
+## Homework
+
+### 

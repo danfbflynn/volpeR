@@ -227,10 +227,10 @@ Select HTML or Word as the default output, and then try clicking 'knit'.
 You may need to `install.packages("rmarkdown")`
 
 
-<!-- ![You should get this!](M:/R/snip4.png) --> 
+<!-- ![You should get this!](images/snip4.png) --> 
 
 ```{r, out.width = "200px", echo = F}
-knitr::include_graphics("M:/R/snip4.png")
+knitr::include_graphics("images/snip4.png")
 ```
 
 ## R Markdown
@@ -239,19 +239,19 @@ There are three parts to the `.Rmd` markdown file:
 ### Header
 
 ```{r, out.width = "90px", echo = F}
-knitr::include_graphics("M:/R/Header.jpg")
+knitr::include_graphics("images/Header.jpg")
 ```
 
 ### Markdown text
 
 ```{r, out.height = "200px", echo = F}
-knitr::include_graphics("M:/R/Text.jpg")
+knitr::include_graphics("images/Text.jpg")
 ```
 
 ### R code
 
 ```{r, out.width = "50px", echo = F}
-knitr::include_graphics("M:/R/Rcode.jpg")
+knitr::include_graphics("images/Rcode.jpg")
 ```
 
 ## Tables in Markdown
@@ -259,7 +259,7 @@ knitr::include_graphics("M:/R/Rcode.jpg")
 The simplest way to integrate tables in Markdown is to format your data frame using the `kable` function. Other options include `pander()` in the `pander` library. 
 
 ```{r, out.width = "250px", echo = F}
-knitr::include_graphics("M:/R/TableKable.jpg")
+knitr::include_graphics("images/TableKable.jpg")
 
 ```
 
