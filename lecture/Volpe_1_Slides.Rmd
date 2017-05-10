@@ -251,7 +251,7 @@ Find the `Motor Trend Car Road Tests.csv` file and put it in your newly created 
 <!-- setwd("~/Dropbox/Work/R/Workshop/Volpe Workshop") -->
 
 ```{r}
-setwd("M:/R") # This will be different for you, and different again on your work computer
+setwd("H:/R") 
 cars <- read.csv("Motor Trend Car Road Tests.csv")
 ```
 
@@ -284,8 +284,8 @@ hist(cars$mpg)
 hist(cars$cyl)
 ```
 
-```{r, echo=FALSE, fig.align='center',fig.width=5,fig.height=2.5}
-par(mfrow=c(1,2), cex = 0.75)
+```{r, echo = FALSE, fig.align = 'center', fig.width = 5, fig.height = 2.5}
+par(mfrow=c(1, 2), cex = 0.75)
 hist(cars$mpg)
 hist(cars$cyl)
 ```
@@ -424,5 +424,5 @@ Supporting resources:
 2. Go to the course website: http://bit.ly/volpeR 
   + Upload your .R script in the **Homework 1** folder.
   + Upload the data file your script uses
-  + Use the file naming convention `Homework 1 <Lastname>.R` and `Homework 1 <Lastname>.csv` for your script and your data file, respectively
+  + Use the file naming convention `Homework 1 <Lastname>.R` and `Homework 1 <Lastname>.csv` for your script and your data file, respectively. Please use the spacing
 

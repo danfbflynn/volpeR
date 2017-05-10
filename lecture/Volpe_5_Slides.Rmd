@@ -31,8 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
 
 - Merging dataframe
 - Wide to long
-- Aggregating using `ddply`
-- Spatial data
+- Plotting spatial data
 
 ## Homework review: Loops
 Loop to generate random subsets of your data:
@@ -58,14 +57,9 @@ for(i in 1:nrow(iris)){
 # Examine it: hist(newdat[,2]); hist(iris[,2])
 ```
 
-## Homework review: Outliers
-
-Stats skill: test your data for outliers, using your models from Homework 2. 
-
-We will review `tripduration` outliers from the Hubway data.
-
 ## Merging data frames
 
+Merging data between different sources requries 
 `merge`
 
 `match`
@@ -101,6 +95,10 @@ We will review `tripduration` outliers from the Hubway data.
 ## `match` and `which`
 
 ## Merging data for spatial analysis
+
+## Saving your work
+
+After doing all this work 
 
 ## Homework
 
