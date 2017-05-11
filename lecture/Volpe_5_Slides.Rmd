@@ -96,9 +96,28 @@ Merging data between different sources requries
 
 ## Merging data for spatial analysis
 
+
+
 ## Saving your work
 
-After doing all this work 
+After doing all this work, you will want to save the results. You can save R objects in your current workspace to file type called `.RData`. Then you can load these R objects back in at a later session, without having to carry out this prepartion work.
+
+For example, to save all objects in the current workspace:
+
+`save(list = ls(), file = "My_Prepped_Data.RData")`
+
+and load it back in using
+
+`load("My_Prepped_Data.RData")`
+
+To save specific R objects, you will name them in the list as strings, such as
+
+`save(list = c('dataframe1', 'dataframe2'), file = "My_Prepped_Data.RData")`
+
+You can also consider making a script that does all this preparation work, and save it as a file called something like `Analysis Prep.R`. Then, in your data analysis script or `.Rmd` file, you can automatically run that script by inserting the command:
+`source('Analysis Prep.R')`.
+
+
 
 ## Homework
 
