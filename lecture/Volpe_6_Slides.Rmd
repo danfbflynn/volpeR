@@ -100,12 +100,25 @@ map('state',
 ## Hierarchical modeling
 
 http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf
+https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf
 
+Hierarchical models are also called *mixed-effects models*, because they mix *fixed* and *random* effects.
 
+- **Fixed effects** are typically predictors you are most interested in. If these are categorical, these are variables usually only have a few different levels, all of which are represented in you data (*all of few*). An example would be two levels of an experimental treatment.
+- **Random effects** are predictors which may be very important, but which you would like to generalize across. Usually categorical, and you may only have a few of many possible levels in your data (*few of many*). An example would be several States.
 
-Glossary:
+In hierarchical modeling, you essentially analyze your fixed effects within each level of the random effects, then pool your results across all the random effects.
 
-Mixed-effects
+## Hierarchical modeling
+
+Here is an example, looking at our fuel consumption data by region.
+```{r}
+library(lme4) # install.packages(lme4) 
+
+```
+
+## Hierarchical modeling
+
 
 ```{r}
 # Modeling by state and month
@@ -118,6 +131,26 @@ library(lme4)
 
 
 ```
+
+## Repeated measures modeling
+
+We can use the hierarchical modeling framework to look at repeated measures or time series. 
+
+Example: subjects are deprived of sleep and are measureed for their reaction times at increasing intervals  (see `?sleepstudy`). How much does sleep deprivation matter?
+We want to track each subject seperately, then pool the results to come up with general conclusions.
+```{r, results = 'hide'}
+rm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+summary(rm1)
+fixef(rm1); ranef(rm1)
+```
+Each additional day increases reaction time by 10.5 +/- 1.5 ms. 
+
+You may be asking yourself, "but what about my p-values?". This is a normal reaction when encountering mixed-effects models! One solution:
+```{r}
+library(sjPlot) # install.packages(sjPlot) first
+sjt.lmer(rm1)
+```
+
 
 ## Saving your work
 
