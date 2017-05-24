@@ -120,17 +120,24 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 </div>
 <div id="hierarchical-modeling" class="slide section level2">
 <h1>Hierarchical modeling</h1>
-<p><a href="http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf" class="uri">http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf</a></p>
+<p><a href="http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf" class="uri">http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf</a> <a href="https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf" class="uri">https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf</a></p>
 <p>Hierarchical models are also called <em>mixed-effects models</em>, because they mix <em>fixed</em> and <em>random</em> effects.</p>
 <ul>
 <li><strong>Fixed effects</strong> are typically predictors you are most interested in. If these are categorical, these are variables usually only have a few different levels, all of which are represented in you data (<em>all of few</em>). An example would be two levels of an experimental treatment.</li>
-<li>** Random effects** are predictors which may be very important, but which you would like to generalize across. Usually categorical, and you may only have a few of many possible levels in your data (<em>few of many</em>). An example would be several States.</li>
+<li><strong>Random effects</strong> are predictors which may be very important, but which you would like to generalize across. Usually categorical, and you may only have a few of many possible levels in your data (<em>few of many</em>). An example would be several States.</li>
 </ul>
 <p>In hierarchical modeling, you essentially analyze your fixed effects within each level of the random effects, then pool your results across all the random effects.</p>
 </div>
 <div id="hierarchical-modeling-1" class="slide section level2">
 <h1>Hierarchical modeling</h1>
-<p>Here is an example:</p>
+<p>Here is an example, looking at our fuel consumption data by region.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lme4) <span class="co"># install.packages(lme4) </span></code></pre></div>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: 'Matrix'</code></pre>
+<pre><code>## The following object is masked from 'package:reshape':
+## 
+##     expand</code></pre>
 </div>
 <div id="hierarchical-modeling-2" class="slide section level2">
 <h1>Hierarchical modeling</h1>
@@ -146,12 +153,6 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># State-level trends</span>
 
 <span class="kw">library</span>(lme4)</code></pre></div>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre><code>## 
-## Attaching package: 'Matrix'</code></pre>
-<pre><code>## The following object is masked from 'package:reshape':
-## 
-##     expand</code></pre>
 </div>
 <div id="repeated-measures-modeling" class="slide section level2">
 <h1>Repeated measures modeling</h1>

@@ -8,7 +8,7 @@
 library(curl)
 
 out <- state <- month <- vector()
-for(i in 1:50){
+for(i in 49:50){
   for(j in 1:12){
   url <- paste("https://www.ncdc.noaa.gov/cag/time-series/us/",
                formatC(i, width = 2, flag = "0"),
@@ -34,4 +34,4 @@ xx <- strsplit(out, ",")
 dat <- data.frame(state, month, yrmo = as.character(unclass(lapply(xx, function(x) x[1]))),
                          avgt = as.numeric(unclass(lapply(xx, function(x) x[2])))                )
 
-write.csv(dat, file = "Avg T by State by Month.csv", row.names = F)
+write.csv(dat, file = "data/Avg T by State by Month.csv", row.names = F)
