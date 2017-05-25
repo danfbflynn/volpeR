@@ -3,11 +3,13 @@ title: 'Volpe R Course: Session 6, Expanded Statistical Toolbox'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "5/25/2017"
 output:
-  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  ioslides_presentation:
+    incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
@@ -16,7 +18,6 @@ colortheme: dolphin
 knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
 setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/lecture")
 ```
-
 
 ## Overview 
 
@@ -37,70 +38,26 @@ setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/lecture")
 
 ## Expanded Statitcal Toolbox
 
-We will work with two data files, on the course Google Drive, <http://bit.ly/volpeR>:
-- `US_State_Avg_Ann_Temp.csv`
+To introduce hierarchical modeling, we will work with the fuel consumption and temperature data introduced in the last session. The temperature data have been updated to provide State-level average temperatures.
+
+The data file ot download is on the course Google Drive, <http://bit.ly/volpeR>:
+
+- `ModelingDat.RData`
+
+This is composed of the temperature and fuel consumption data
+
+- `Avg T by State by Month.csv`
 - `Net_generation_for_all_fuels_(utility-scale)_monthly.csv`
 
-Download them and read them in. For the Fuel generation file, downloaded from the Energy Information Administration, we need to skip several lines at the top:
+These have already been prepared following the steps outlined in the previous session, and results saved in the `.RData` file.
 
 ```{r}
-avg.temp <- read.csv("data/US_State_Avg_Ann_Temp.csv")
-net.fuel <- 
-  read.csv("data/Net_generation_for_all_fuels_(utility-scale)_monthly.csv",
-                     skip = 4)
-
+load('data/ModelingDat.RData')
+ls()
 ```
 
-The fuel data also needs some cleaning up with the file names, which we can do using `sub`:
-
-```{r, results = 'hide'}
-names(net.fuel)
-names(net.fuel) <- sub("...all.sectors.thousand.megawatthours", # Pattern 
-                       "",                                      # Replacement
-                       names(net.fuel))                         # Vector 
-names(net.fuel)
-```
-
-## Merging data frames
-
-Using the example data, let's reshape and merge the data together.
-
-```{r, results = 'hide'}
-library(reshape)
-net.melt <- melt(net.fuel)
-names(net.melt) = c("Month", "Region", "NetFuel")
-
-avg.temp$Region <- gsub(" ", ".", avg.temp$Region) 
-# gsub matches multiple instances
-
-fuel.temp <- merge(avg.temp, net.melt, all.y = T)
-```
-
-## Merging data for spatial analysis
-
-One application of the merge data is to plot it spatially. 
-
-```{r, results = 'hide', eval = F}
-library(maps)
-map('state') 
-# Plot avg temp 
-statenames  <- map('state', plot = FALSE)$names
-statematches <- match(statenames, tolower(avg.temp$State))
-tempmatches <- avg.temp$Avg.degF[statematches]
-
-colorpal <- heat.colors(100)
-
-temp.colors <- colorpal[round(tempmatches)]
-
-map('state', 
-    col = temp.colors,
-    fill = T)
-```
 
 ## Hierarchical modeling
-
-http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf
-https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf
 
 Hierarchical models are also called *mixed-effects models*, because they mix *fixed* and *random* effects.
 
@@ -109,27 +66,55 @@ Hierarchical models are also called *mixed-effects models*, because they mix *fi
 
 In hierarchical modeling, you essentially analyze your fixed effects within each level of the random effects, then pool your results across all the random effects.
 
+Lots more detail!
+
+- http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf
+
+- https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf
+
+## Hierarchical modeling
+
+The syntax in the `lmer` package for mixed-effect modeling is similar to what you have seen using `lm()`, but now you will have to add at least one random effect. The random effects take the two following common forms:
+
+- `(1|RandomFactor)` Gives a different intercept for each level of the factor
+- `(FixedContinuous|RandomFactor)` Gives a different slope and intercept for each level of the factor.
+
+Additional forms you may use include:
+
+- `(1|RandomFactor1/RandomFactor2)` Is a nested model, with a different intercept for each level of RandomFactor2. These are pooled to form a different intercept for each higher level, of RandomFactor1. For example, counties within states. 
+
+- `(FixedContinuousTime|RandomFactorSubject)` For repeated measures on a subject.
+
 ## Hierarchical modeling
 
 Here is an example, looking at our fuel consumption data by region.
-```{r}
+```{r, message = F}
 library(lme4) # install.packages(lme4) 
-
+# Region is random effect, avgt is fixed effect
+m1 <- lmer(NetFuel ~ avgt + (1|Region), data = fuel.temp)
+fixef(m1)
+ranef(m1)
 ```
 
 ## Hierarchical modeling
 
-
+This is the analogous to fitting a model for each region, then pooling across regions, for example doing this for each region separately:
 ```{r}
-# Modeling by state and month
-head(fuel.temp)
+m1.1 <- lm(NetFuel ~ avgt, data = fuel.temp[fuel.temp$Region == "New.England",])
+summary(m1.1)
+m1.2 <- lm(NetFuel ~ avgt, data = fuel.temp[fuel.temp$Region == "East.North.Central",])
+summary(m1.2)
+# etc..
+```
 
-# State-level trends
+## Hierarchical modeling
 
-library(lme4)
+Visually, you can think of the hierarchical model almost like this:
 
-
-
+```{r, warning = F, message = F}
+library(ggplot2)
+ggplot(fuel.temp) + aes(avgt, NetFuel, color = Region) +
+  geom_point(alpha = 0.1) + geom_smooth(method = "lm")
 ```
 
 ## Repeated measures modeling
@@ -143,13 +128,36 @@ rm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 summary(rm1)
 fixef(rm1); ranef(rm1)
 ```
-Each additional day increases reaction time by 10.5 +/- 1.5 ms. 
+Each additional day increases reaction time by 10.5   1.5 ms. 
 
 You may be asking yourself, "but what about my p-values?". This is a normal reaction when encountering mixed-effects models! One solution:
+
 ```{r}
 library(sjPlot) # install.packages(sjPlot) first
 sjt.lmer(rm1)
 ```
+
+## Repeated measures modeling
+
+### Exercise: 
+Try to write models that estimate the trends in 1. net fuel consumption by month, and 2. average temeprature by year, taking into account regional differences.
+
+<!-- 
+```{r}
+# Modeling net fuel by Region and month
+m2 <- lmer(NetFuel ~ avgt + mo + (1+mo|Region), data = fuel.temp) 
+
+# Modeling average temperature by Region and year (warning message)
+m3 <- lmer(avgt ~ year + (1+year|Region), data = fuel.temp)
+
+```
+-->
+
+
+## Report Presentations!
+
+Show the report you generated for this workshop (using `.Rmd`) and explain the story it tells. 
+
 
 
 ## Saving your work
@@ -171,7 +179,24 @@ To save specific R objects, you will name them in the list as strings, such as
 You can also consider making a script that does all this preparation work, and save it as a file called something like `Analysis Prep.R`. Then, in your data analysis script or `.Rmd` file, you can automatically run that script by inserting the command:
 `source('Analysis Prep.R')`.
 
-## Report Presentation
+## Merging data for spatial analysis
 
-Show the report you generated for this session (using `.Rmd`) and explain the story it tells. Show them how you used Markdown in your case, and get their feedback on elements to edit or improve. Leave enough time for both people to present.
+Another application of the merged data is to plot it spatially. 
+
+```{r, results = 'hide', eval = F}
+library(maps)
+map('state') 
+# Plot avg temp 
+statenames  <- map('state', plot = FALSE)$names
+statematches <- match(statenames, tolower(avg.temp$state))
+tempmatches <- avg.temp$avgt[statematches]
+
+colorpal <- heat.colors(100)
+
+temp.colors <- colorpal[round(tempmatches)]
+
+map('state', 
+    col = temp.colors,
+    fill = T)
+```
 

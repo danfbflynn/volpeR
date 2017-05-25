@@ -384,6 +384,21 @@ m3 <- lmer(avgt ~ year + (1+year|Region), data = fuel.temp)
 ```
 -->
 </div>
+<div id="repeated-measures-modeling-2" class="slide section level2">
+<h1>Repeated measures modeling</h1>
+<h3 id="exercise-1">Exercise:</h3>
+<p>Try to write models that estimate the trends in 1. net fuel consumption by month, and 2. average temeprature by year, taking into account regional differences.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Modeling net fuel by Region and month</span>
+m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>(NetFuel ~<span class="st"> </span>avgt +<span class="st"> </span>mo +<span class="st"> </span>(<span class="dv">1</span>+mo|Region), <span class="dt">data =</span> fuel.temp) 
+
+<span class="co"># Modeling average temperature by Region and year (warning message)</span>
+m3 &lt;-<span class="st"> </span><span class="kw">lmer</span>(avgt ~<span class="st"> </span>year +<span class="st"> </span>(<span class="dv">1</span>+year|Region), <span class="dt">data =</span> fuel.temp)</code></pre></div>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control
+## $checkConv, : unable to evaluate scaled gradient</code></pre>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control
+## $checkConv, : Model failed to converge: degenerate Hessian with 1 negative
+## eigenvalues</code></pre>
+</div>
 <div id="report-presentations" class="slide section level2">
 <h1>Report Presentations!</h1>
 <p>Show the report you generated for this workshop (using <code>.Rmd</code>) and explain the story it tells.</p>

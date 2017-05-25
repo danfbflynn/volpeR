@@ -204,8 +204,9 @@ m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>(NetFuel ~<span cla
 <span class="kw">fixef</span>(rm1); <span class="kw">ranef</span>(rm1)</code></pre></div>
 <p>Each additional day increases reaction time by 10.5 +/- 1.5 ms.</p>
 <p>You may be asking yourself, “but what about my p-values?”. This is a normal reaction when encountering mixed-effects models! One solution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sjPlot) <span class="co"># install.packages(sjPlot) first</span>
-<span class="kw">sjt.lmer</span>(rm1)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sjPlot) <span class="co"># install.packages(sjPlot) first</span></code></pre></div>
+<pre><code>## Visit http://strengejacke.de/sjPlot for package-vignettes.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sjt.lmer</span>(rm1)</code></pre></div>
 <pre><code>## Computing p-values via Kenward-Roger approximation. Use `p.kr = FALSE` if computation takes too long.</code></pre>
 <table style="border-collapse:collapse; border:none;border-bottom:double;">
 <td style="padding:0.2cm; border-top:double;">
@@ -384,10 +385,6 @@ m3 <- lmer(avgt ~ year + (1+year|Region), data = fuel.temp)
 ```
 -->
 </div>
-<div id="report-presentations" class="slide section level2">
-<h1>Report Presentations!</h1>
-<p>Show the report you generated for this workshop (using <code>.Rmd</code>) and explain the story it tells.</p>
-</div>
 <div id="saving-your-work" class="slide section level2">
 <h1>Saving your work</h1>
 <p>After doing all this work, you will want to save the results. You can save R objects in your current workspace to file type called <code>.RData</code>. Then you can load these R objects back in at a later session, without having to carry out this preparation work.</p>
@@ -416,6 +413,10 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 <span class="kw">map</span>(<span class="st">'state'</span>, 
     <span class="dt">col =</span> temp.colors,
     <span class="dt">fill =</span> T)</code></pre></div>
+</div>
+<div id="report-presentation" class="slide section level2">
+<h1>Report Presentation</h1>
+<p>Show the report you generated for this session (using <code>.Rmd</code>) and explain the story it tells. Show them how you used Markdown in your case, and get their feedback on elements to edit or improve. Leave enough time for both people to present.</p>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
