@@ -3,13 +3,11 @@ title: 'Volpe R Course: Session 6, Expanded Statistical Toolbox'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "5/25/2017"
 output:
+  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
-  ioslides_presentation:
-    incremental: no
-  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
@@ -36,11 +34,11 @@ setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/lecture")
 
 #### Project Presentations
 
-## Expanded Statitcal Toolbox
+## Expanded Statistical Toolbox
 
 To introduce hierarchical modeling, we will work with the fuel consumption and temperature data introduced in the last session. The temperature data have been updated to provide State-level average temperatures.
 
-The data file ot download is on the course Google Drive, <http://bit.ly/volpeR>:
+The data file to download is on the course Google Drive, <http://bit.ly/volpeR>:
 
 - `ModelingDat.RData`
 
@@ -128,11 +126,11 @@ rm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 summary(rm1)
 fixef(rm1); ranef(rm1)
 ```
-Each additional day increases reaction time by 10.5   1.5 ms. 
+Each additional day increases reaction time by 10.5  +/- 1.5 ms. 
 
 You may be asking yourself, "but what about my p-values?". This is a normal reaction when encountering mixed-effects models! One solution:
 
-```{r}
+```{r, results='hide'}
 library(sjPlot) # install.packages(sjPlot) first
 sjt.lmer(rm1)
 ```
@@ -142,7 +140,6 @@ sjt.lmer(rm1)
 ### Exercise: 
 Try to write models that estimate the trends in 1. net fuel consumption by month, and 2. average temeprature by year, taking into account regional differences.
 
-<!-- 
 ```{r}
 # Modeling net fuel by Region and month
 m2 <- lmer(NetFuel ~ avgt + mo + (1+mo|Region), data = fuel.temp) 
@@ -151,7 +148,7 @@ m2 <- lmer(NetFuel ~ avgt + mo + (1+mo|Region), data = fuel.temp)
 m3 <- lmer(avgt ~ year + (1+year|Region), data = fuel.temp)
 
 ```
--->
+
 
 
 ## Report Presentations!
