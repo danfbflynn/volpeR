@@ -3,11 +3,11 @@ title: 'Volpe R Course: Session 3'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "4/13/2017"
 output:
+  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
-  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
