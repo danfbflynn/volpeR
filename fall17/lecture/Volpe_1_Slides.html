@@ -53,9 +53,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <p class="author">
 <p>Instructors: Don Fisher, Dan Flynn, Jessie Yang</p>
 <p>Course webpage: <a href="http://bit.ly/volpeR" class="uri">http://bit.ly/volpeR</a></p>
-<p>Make this directory: H:/R</p>
+<p>| Make this directory: H:/R</p>
   </p>
-  <p class="date">3/17/2017</p>
+  <p class="date">9/6/2017</p>
+</div>
+<div class="slide section level2">
+
+<!-- Use Slidy to render, not ioslides -->
 </div>
 <div id="introduction-to-r" class="slide section level2">
 <h1>Introduction to R</h1>
@@ -65,12 +69,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Powerful: The power of R is that you can write your own functions and customize the analyses, and then you can automate the analysis by re-using your code.</li>
 <li>Programming environment: R is command-line driven, and has it’s own syntax, similar to Unix. This is less intimidating than it sounds!</li>
 </ul>
-<p>Goals of this workshop include introducing R to Volpe staff, and getting you up to the level of carrying out analyses on your own data. This course does assume some familiarity with basic statistics.</p>
+<p>Goals of this workshop include introducing R to Volpe staff, with a focus on learning the statistical software for basic data analysis, visualization, and report preparation. This course does not assume previous knowledge of statistics or programming.</p>
 </div>
 <div id="what-is-r" class="slide section level2">
 <h1>What is R?</h1>
 <p>R is an open-source programming environment developed and maintained by statisticians. People are so fond of R because users are constantly writing new sets of functions for it, called packages.</p>
-<p>The program (and all the current packages) can be downloaded from <a href="http://cran.r-project.org" class="uri">http://cran.r-project.org</a>. For your own computers, you will need to download and install R by following the appropriate links:</p>
+<p>The program (and all the current packages) can be downloaded from <a href="http://cran.r-project.org" class="uri">http://cran.r-project.org</a>. For your own computers, you should have R installed already; if not, can download and install R by following the appropriate steps:</p>
 <ol style="list-style-type: decimal">
 <li>Click on Base, Download R 3.3.3 for Windows</li>
 <li>Run the installation set up, saying yes to all the defaults.</li>
@@ -90,20 +94,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1>Workflow in R</h1>
 <ul>
 <li>RStudio provides a platform-independent interface and several excellent features</li>
-<li>Organize your directories</li>
-<li><p>Consider sharing and archiving options beyond network drives: <code>github</code>!</p></li>
-<li><a href="http://www.github.com" class="uri">http://www.github.com</a></li>
-<li>Character-level tracking of changes</li>
-<li><p>Public</p></li>
+<li>Freely available on <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></li>
 </ul>
 </div>
 <div id="starting-up-r" class="slide section level2">
 <h1>Starting up R</h1>
 <p>You’ll see the R console, with a bunch of official information. What you can get out of this: the program offers you a few hints on how to get started, like typing in <code>help()</code>. Try it. You’ll see the window with the help documentation; not very useful now, because you don’t know what to look for, but it will come in handy later.</p>
 </div>
+<div id="basic-concepts" class="slide section level2">
+<h1>Basic concepts</h1>
+<p>R is a command-line driven programming environment. There are two places you an enter commands:</p>
+<ul>
+<li>Console: For quick entry of single commands</li>
+<li>Script: For everything else! Including complex commands for preparing, analyzing, and reporting data, these are editable and sharable files ending in <code>.R</code></li>
+</ul>
+</div>
 <div id="simple-calculations" class="slide section level2">
 <h1>Simple calculations</h1>
-<p>This section describes how to use R for simple calculations, like arithmetic and entering a series of numbers. These steps are important, because they introduce by example some of the fundamental ways that R works.</p>
+<p>This section describes how to use R for simple calculations, like arithmetic and entering a series of numbers. These steps are important, because they introduce by example some of the fundamental ways that R works. First we will enter commands in the console.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> +<span class="st"> </span><span class="dv">2</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Fortunately, that is not all R can do! R is designed to work with vectors, like columns of data in Excel.</p>
