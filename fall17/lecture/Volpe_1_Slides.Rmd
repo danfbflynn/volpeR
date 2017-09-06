@@ -1,15 +1,14 @@
 ---
 title: 'Volpe R Course: Day 1'
-author:
-- Don Fisher, Dan Flynn, Jessie Yang
-subtitle: Course webpage http://bit.ly/volpeR
+author: "Don Fisher, Dan Flynn, Jessie Yang"
 date: "9/6/2017"
 output:
+  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
-  slidy_presentation: default
 fontsize: 8pt
+subtitle: Course webpage http://bit.ly/volpeR
 colortheme: dolphin
 ---
 ## Introduction to R 
@@ -47,9 +46,10 @@ The program (and all the current packages) can be downloaded from http://cran.r-
 
 ## Workflow in R
 
-- RStudio provides a platform-independent interface and several excellent features
+- RStudio provides a platform-independent interface and several excellent features.
 - Freely available on https://www.rstudio.com/products/rstudio/download/
-
+- Auto-completion of functions and syntax coloring for code.
+- Integration with reporting tools (RMarkdown) and interactive visualization tools (Shiny).
 
 
 ## Starting up R
@@ -60,8 +60,10 @@ You'll see the R console, with a bunch of official information. What you can get
 
 R is a command-line driven programming environment. There are two places you an enter commands:
 
-- Console: For quick entry of single commands
-- Script: For everything else! Including complex commands for preparing, analyzing, and reporting data, these are editable and sharable files ending in `.R`
+- *Console*: For quick entry of single commands
+- *Script*: For everything else! Including complex commands for preparing, analyzing, and reporting data, these are editable and shareable files ending in `.R`
+
+You will work in scripts mainly. Your 'homework' assignments will be to produce a `.R` script that you share with us.
 
 ## Simple calculations
 
@@ -115,66 +117,7 @@ summary(example)
 head(example)
 ```
 
-## DIY Statistics
-Let's use our fake data to illustrate how to do basic statistics with home-made methods, and write our own little program.
 
-Firsts, try summing the using `sum(x)`. Ok, now try `mean(x)`. Another: `length(x)` tells you how many numbers there are in the vector x; you can also think of this as the n number of samples in your data set. 
-
-Now, let's combine them to start doing some statistics. Remember that the sum of squares an important value in statistics, which is the sum of the squared differences between each data point and the mean. In symbols:
-
-
-$SS = \sum (x - \overline x)^2$
-
-## DIY Statistics
-
-We can make R do this by typing a series of commands nested inside each other, adding the parentheses to keep things straight. First, the difference between each x and the mean value for all x's:
-```{r, results='hide'}
-x-mean(x)
-```
-
-Now square it:
-```{r,  results='hide'}
-(x-mean(x))^2
-```
-
-And sum them all:
-```{r,  results='hide'}
-sum((x-mean(x))^2)
-```
-
-## DIY Statistics
-Great. Now what can we do with this number? We might want to know the variance of the data, which is the sum of squares divided by n-1:
- 
-$s^2 = \frac{\sum(x - \overline x)^2}{n-1}$
-
-We can tell R to do this by adding one more bit to our last command (hint: use the up arrow to restore the last command without having to type it in):
-
-`(sum((x-mean(x))^2))/(length(x)-1)`
-
-
-What if we want to calculate this for a lot of variables, and don't enjoy cutting and pasting all that much? We can write a function to make our lives easier. It's much easier to do this in an Editor window than in the R console. Go to File > New File > R Script.
-
-## DIY Statistics
-In the new window that opens up, type this: 
-
-```{r}
-variance <- function(x){
-	sum(((x-mean(x))^2)/(length(x)-1))
-}
-```
-
-And test it out: 
-```{r, results = 'hide'}
-variance(x)
-```
-
-Congratulations. You just wrote your first R function. In fact, your work has already been done by others: R has a built-in function to calculate variances, sensibly called `var()`. Check `var(x)` and `var(y)` to see that your function works perfectly.
-
-## DIY Statistics
-What if you are already confused about what all variables you have to work with? Look at the list of objects in your workspace using `ls()` (without typing anything in the parentheses). You'll see `variance`, `x`, `y`, and `example` in there. Remove `x` and `y`, and variance by the command 
-```{r}
-rm(x, y, variance)
-```
 
 ## Getting you data in
 R looks for the working directory to read data files and to write output. Where is this directory? Type in `getwd()` to see. 
@@ -234,7 +177,7 @@ values <- c(6.1, 5.9, 6.3, 6.2, 7.1, 8.2)
 ```
 
 ### Mini-exercise:
-What is the `rep()` function? What happends if `each` is changed to `times`? Look it up in the help.
+What is the `rep()` function? What happens if `each` is changed to `times`? Look it up in the help.
 
 <!-- They should use ?rep or help(rep) -->
 
@@ -341,51 +284,14 @@ tapply(cars$mpg, cars$cyl, mean)
 
 Much better. Do the same for `sd()`. 
 
-## Excercise 1:
-
-Write a function to calculate the minimum, median, and standard deviation of a vector, and show the result on the console.
-
-Try yourself first, then work with your neighbor.  
-
-<!-- Uncomment for presenter version
-## Exercise 1:
-
-What did you come up with? Three possible solutions:
-```{r}
-summarize.1 <- function(x){
-  print(min(x))
-  print(median(x))
-  print(sd(x))
-  }
-
-summarize.2 <- function(x){
-  min.x <- mean(x)
-  med.x <- median(x)
-  sd.x <- sd(x)
-  print(data.frame(min.x, med.x, sd.x))
-}
-
-summarize.3 <- function(x){ # requries printing the result after!
-  min.x <- min(x)
-  med.x <- median(x)
-  sd.s <- sd(x)
-  data.frame(min.x, med.x, sd.x)
-}
-
-```
-
-<!-- Lessons: 
-1. There are many ways to solve problems in R
-2. print() is requried to force R to show the output of a function -->
-
-
 ## Basic plots
 
 Let's look at these data in two ways. First, let's examine how MPG varies by number of cylinders. We can do this a few ways, but first make a box plot:
 
 `boxplot(mpg ~ cyl, data = cars)`
 
-```{r, fig.width=3, fig.height=2.5, echo=FALSE, fig.align='center'}
+```{r, fig.width=2, fig.height=1.5, echo=FALSE, fig.align='center'}
+par(mar = c(3, 3, 0, 0))
 boxplot(mpg ~ cyl, data = cars, cex = 0.3)
 ```
 
@@ -399,6 +305,30 @@ Try improving this figure by adding some terms: `xlab`, `ylab`, and `main`.
 Next, look at the relationship between MPG and vehicle weight.:
 ```{r, fig.width=4, fig.height=3, fig.align='center'}
 plot(mpg ~ wt, data = cars)
+```
+
+
+## Working with packages
+
+R is an open-source software, meaning anyone can see the source code and make suggestions and extensions. New modules of code are constantly being built, and these *packages* can be installed using the following commands:
+
+```{r, eval = F}
+install.packages("ggplot2") # a common graphing package
+library(ggplot2)
+```
+
+When you see `library(xxx)` in someone else's code, you may need to first `install.packages("xxx")` before you can run that command.
+
+
+Try it:
+`qplot(wt, mpg, data = cars, color = am)`
+
+```{r, fig.width=3.5, fig.height=1.5, echo=FALSE, fig.align='center'}
+library(ggplot2)
+par(mar = c(3, 3, 4, 0),xpd =T)
+#ggplot(cars) + aes(wt, mpg, color = am) + geom_point()
+# coloring by automatic/manual
+qplot(wt, mpg, data = cars, color = am) # equivalent
 ```
 
 
