@@ -1,0 +1,186 @@
+---
+title: 'Volpe R Course: Session 3, Data Exploration'
+author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
+date: "9/19/2017"
+output:
+  slidy_presentation: default
+  ioslides_presentation:
+    incremental: no
+  beamer_presentation:
+    includes:
+      in_header: beamertemp.tex
+    incremental: no
+fontsize: 8pt
+colortheme: dolphin
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
+library(ggplot2)
+library(gridExtra)
+```
+
+
+## Overview 
+
+### Last session:
+
+- Writing functions
+- Writing loops
+
+
+### Today: Data exploration
+
+- Aggregating data
+- Matching
+- Reshaping data
+- Basic data analysis
+- Saving work and sharing
+
+## Homework
+
+*We will review your work these steps at the end of the session, time permitting*
+
+### Loops
+
+1. R skill: write two loops. One should loop generate random subsets of your data; Another should loop over rows in a data frame and perform some operation
+
+### Functions
+
+
+## Data manipulation
+
+Hubway `tripduration` outlier test: 
+Read in the Hubway data from the course page and look at tripduration. How would you decide which data should be considered outliers?
+
+## Aggregating data
+
+
+## Aggregating data
+
+Three functions are most useful for aggregating data: `aggregate`, `tapply`, and `apply`.
+Using the merged file, create mean net fuel consumption tables:
+
+```{r, results = 'hide'}
+# Two index vectors, using aggregate
+aggregate(fuel.temp$NetFuel, 
+          by = list(fuel.temp$Region, fuel.temp$State), FUN = mean)
+
+# Or with only one index vector, using tapply
+tapply(fuel.temp$NetFuel, fuel.temp$Region, mean)
+```
+Use apply to look across multiple columns or rows
+
+```{r, results = 'hide'}
+apply(fuel.temp[3:4],     # data frame to look at (should be two-dimensional)
+      2,                  # 1 is for rows, 2 is for columns
+      mean)               # Function
+ 
+```
+
+### Exercise: 
+Create a table of *annual* net fuel consumption for each region. 
+
+
+
+## Matching and merging
+
+
+## Regular expressions
+
+The use of `sub` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
+
+```{r}
+text1 <- c("Testing", "matching ", " and subustitutions")
+sub(" +$", "", text1) # find and replace trailing whitespace
+grep("^ ", text1) # find elements which start with a whitespace
+grep("^[A-Z]", text1) # find elements which start with a capital letter
+```
+
+## Merging data frames
+
+Merging data between different sources requires having a common column name or row name. The two functions most often used are `merge` and `match`. Type the following:
+
+```{r, results = 'hide'}
+example(merge)
+authors
+books
+
+merge(authors, books, by.x = "surname", by.y = "name") 
+# and do it again again, adding `all.y = TRUE`
+```
+
+We can use match to carry out a similar operation. Match is more flexible than merge, and therefore more difficult to use!
+
+```{r, results='hide'}
+m1 <- match(authors$surname, books$name) # returns index for the second element which match the first
+
+books[m1,]
+
+newdata <- data.frame(authors, books[m1,])
+```
+
+
+## Merging data frames
+
+`match` can also be used in many other contexts, besides merging data frames. Additional functions for matching to know are `which`, `grep`, and `intersect`.
+
+```{r}
+which(books$name == "Ripley")
+grep("Rip", books$name) # partial string matching
+intersect(books$name, authors$surname) 
+# unique shared elements, order unimportant.
+
+```
+
+
+
+## Saving your work
+
+After doing all this work, you will want to save the results. You can save R objects in your current workspace to file type called `.RData`. Then you can load these R objects back in at a later session, without having to carry out this preparation work.
+
+For example, to save all objects in the current workspace:
+
+`save(list = ls(), file = "My_Prepped_Data.RData")`
+
+and load it back in using
+
+`load("My_Prepped_Data.RData")`
+
+To save specific R objects, you will name them in the list as strings, such as
+
+`save(list = c('fuel.temp', 'avg.temp'), file = "My_Prepped_Data.RData")`
+
+You can also consider making a script that does all this preparation work, and save it as a file called something like `Analysis Prep.R`. Then, in your data analysis script or `.Rmd` file, you can automatically run that script by inserting the command:
+`source('Analysis Prep.R')`.
+
+<!-- Time permitting, review homework:
+
+## Homework review: Loops
+Loop to generate random subsets of your data:
+
+```{r}
+# Get 10 samples of data from each species:
+sampx <- vector()
+for(i in levels(iris$Species)){
+  iris.sp.i <- iris[iris$Species == i,]
+  sampx <- rbind(sampx, iris.sp.i[sample(rownames(iris.sp.i), 10),])
+  }
+```
+
+Loop over rows in a data frame and perform some operation:
+```{r}
+# Subtract mean from each 
+means <- apply(iris[,1:4], 2, mean)
+newdat <- vector()
+for(i in 1:nrow(iris)){
+  newdat.x <- iris[i,1:4] - means
+  newdat <- rbind(newdat, data.frame(newdat.x, iris[i,5]))
+  }
+# Examine it: hist(newdat[,2]); hist(iris[,2])
+```
+
+
+-->
+
+
