@@ -33,65 +33,152 @@ library(gridExtra)
 
 - Aggregating data
 - Matching
-- Reshaping data
 - Basic data analysis
 - Saving work and sharing
 
 ## Homework
 
-*We will review your work these steps at the end of the session, time permitting*
+*Quick review of some of your solutions!*
 
 ### Loops
 
-1. R skill: write two loops. One should loop generate random subsets of your data; Another should loop over rows in a data frame and perform some operation
+Write a loop to perform some task on your data.
+
+```{r, eval = F}
+indexvec <- vector()
+
+for(indexvalue in 1:15){
+  indexvec <- c(indexvec,
+ sample(homework2$Numeric1,size=1))
+}
+ 
+indexvec
+```
 
 ### Functions
 
-
-## Data manipulation
-
-Hubway `tripduration` outlier test: 
-Read in the Hubway data from the course page and look at tripduration. How would you decide which data should be considered outliers?
-
-## Aggregating data
+Write a function to perform some task on your data.
 
 
-## Aggregating data
+```{r, eval = F}
 
-Three functions are most useful for aggregating data: `aggregate`, `tapply`, and `apply`.
-Using the merged file, create mean net fuel consumption tables:
-
-```{r, results = 'hide'}
-# Two index vectors, using aggregate
-aggregate(fuel.temp$NetFuel, 
-          by = list(fuel.temp$Region, fuel.temp$State), FUN = mean)
-
-# Or with only one index vector, using tapply
-tapply(fuel.temp$NetFuel, fuel.temp$Region, mean)
+GradeServ <- function(emp){
+  mg <- mean(emp$Grade)
+  ms <- mean(emp$Years.Of.Service)
+  c(mg, ms)
+}
+GradeServ(emp)
 ```
-Use apply to look across multiple columns or rows
+
+
+## Data exploration
+
+Read in the Hubway data from the course page. We will use this data on Hubway bike-share trips (from https://www.thehubway.com/system-data) to demonstrate first steps in exploring a new data set (with all the issues that real-world data often have!).
+
+Read in the data, after downloading to your H: drive:
+
+```{r}
+setwd("H:/R")
+
+d <- read.csv("Hubway_Sample.csv")
+
+head(d)
+```
+## Aggregating data
+
+Aggregating data is done most often with these functions: `aggregate`, `tapply`, and `apply`.
+
+Use `aggregate` to make two-way (or more) summary tables:
 
 ```{r, results = 'hide'}
-apply(fuel.temp[3:4],     # data frame to look at (should be two-dimensional)
+aggregate(d$tripduration, 
+          by = list(d$birth.year, d$gender), FUN = mean)
+```
+
+Use `tapply` to make one-way summary tables:
+
+```{r, results = 'hide'}
+tapply(d$tripduration, d$gender, mean)
+```
+
+## Aggregating data
+
+Use apply to look across multiple columns or rows:
+
+```{r, results = 'hide'}
+apply(d[6:7],     # data frame to look at (should be two-dimensional)
       2,                  # 1 is for rows, 2 is for columns
       mean)               # Function
  
 ```
 
-### Exercise: 
-Create a table of *annual* net fuel consumption for each region. 
+## Aggregating data
 
+For these data, the start and stop time should be read in as a `datetime` class vectors, which have different properties from character or factor vectors. Use the `strptime` function to convert to `datetime` class, which in R is called POSIXlt.
+
+```{r}
+class(d$starttime)
+d$starttime[1]
+
+# Pay attention to the capitalization!
+d$starttime <- strptime(d$starttime, format = "%m/%d/%Y %H:%M")
+class(d$starttime)
+
+# Create starthour 
+d$starthour <- as.numeric(format(d$starttime, "%H"))
+hist(d$starthour) # see the clear peaks for communiting times.
+```
+
+
+## Aggregating data
+
+Let's aggregate the trip duration by the new variable start hour and by gender.
+
+```{r, results = 'hide'}
+# Two index vectors, using aggregate
+aggregate(d$tripduration, 
+          by = list(d$starthour, d$gender), FUN = mean)
+
+```
+
+### Exercise: 
+
+Create a table of average trip duration by *month* of the year.
+
+Hint: look at `?strptime` for format ideas
+
+####  Optional advanced exercise:
+
+Carry out a statistical test to assess if trip duration differs by month of the year. Do you format *month* as a factor or a numeric variable? Which test would you use to assess that?  
 
 
 ## Matching and merging
 
+Matching is a powerful tool to work with character strings, and comes in handy for both cleaning data and creating subsets of data. The most common functions are:
+
+- `grep` to find the elements that partially match one input
+- `sub` to find and change the elements that match one input
+- `match` to find the elements that match a vector of inputs
+
+```{r}
+boylston.stations <- grep("Boylston", d$start.station.name)
+
+length(boylston.stations)
+length(boylston.stations) / nrow(d)
+
+# make a subset based on this search:
+
+db <- d[boylston.stations,]
+dim(db)
+
+```
 
 ## Regular expressions
 
-The use of `sub` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
+The use of `grep` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
 
 ```{r}
-text1 <- c("Testing", "matching ", " and subustitutions")
+text1 <- c("Testing", "matching ", " and substitutions")
 sub(" +$", "", text1) # find and replace trailing whitespace
 grep("^ ", text1) # find elements which start with a whitespace
 grep("^[A-Z]", text1) # find elements which start with a capital letter
@@ -110,7 +197,7 @@ merge(authors, books, by.x = "surname", by.y = "name")
 # and do it again again, adding `all.y = TRUE`
 ```
 
-We can use match to carry out a similar operation. Match is more flexible than merge, and therefore more difficult to use!
+We can use match to carry out a similar operation. `match` is more flexible than `merge`, and therefore more difficult to use!
 
 ```{r, results='hide'}
 m1 <- match(authors$surname, books$name) # returns index for the second element which match the first
@@ -127,12 +214,13 @@ newdata <- data.frame(authors, books[m1,])
 
 ```{r}
 which(books$name == "Ripley")
+
 grep("Rip", books$name) # partial string matching
+
 intersect(books$name, authors$surname) 
 # unique shared elements, order unimportant.
 
 ```
-
 
 
 ## Saving your work
@@ -149,38 +237,22 @@ and load it back in using
 
 To save specific R objects, you will name them in the list as strings, such as
 
-`save(list = c('fuel.temp', 'avg.temp'), file = "My_Prepped_Data.RData")`
+`save(list = c('d', 'books'), file = "My_Prepped_Data.RData")`
 
-You can also consider making a script that does all this preparation work, and save it as a file called something like `Analysis Prep.R`. Then, in your data analysis script or `.Rmd` file, you can automatically run that script by inserting the command:
+You can also consider making a script that does all this preparation work, and save it as a file called something like `Analysis Prep.R`. Then, in your data analysis script, you can automatically run that script by inserting the command:
 `source('Analysis Prep.R')`.
 
-<!-- Time permitting, review homework:
+## Homework
 
-## Homework review: Loops
-Loop to generate random subsets of your data:
+Using the Hubway sample data, or your own data if you like, try to do the following:
 
-```{r}
-# Get 10 samples of data from each species:
-sampx <- vector()
-for(i in levels(iris$Species)){
-  iris.sp.i <- iris[iris$Species == i,]
-  sampx <- rbind(sampx, iris.sp.i[sample(rownames(iris.sp.i), 10),])
-  }
-```
+- Make summaries of your data using `aggregate`, `tapply`, and `apply`
+- Make a subset of your data using `grep`
+- Make two different subsets of your data, then merge them together using `merge`
 
-Loop over rows in a data frame and perform some operation:
-```{r}
-# Subtract mean from each 
-means <- apply(iris[,1:4], 2, mean)
-newdat <- vector()
-for(i in 1:nrow(iris)){
-  newdat.x <- iris[i,1:4] - means
-  newdat <- rbind(newdat, data.frame(newdat.x, iris[i,5]))
-  }
-# Examine it: hist(newdat[,2]); hist(iris[,2])
-```
+### Optional advanced homework:
 
-
--->
+- Examine the data for outliers. What values are too extreme to be 'real', and how would you filter your dataset to exclude them?
+- Analyze your dataset using the statistical functions `t.test`, `aov`, or `lm`, as appropriate.
 
 
