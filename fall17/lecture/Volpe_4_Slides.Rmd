@@ -3,13 +3,13 @@ title: 'Volpe R Course: Session 4, Communicating Results'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "9/26/2017"
 output:
+  slidy_presentation: default
+  ioslides_presentation:
+    incremental: no
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
-  ioslides_presentation:
-    incremental: no
-  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
@@ -44,7 +44,7 @@ Quick digression to review material from last session!
 
 The use of `sub` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
 
-```{r, echo = F}
+```{r, echo = T, results='hide'}
 text1 <- c("Testing", "matching ", " and substitutions")
 
 grep("testing", text1, ignore.case = TRUE) # Pattern matching
@@ -83,16 +83,16 @@ plot(iris$Petal.Length, iris$Sepal.Length) # identical
 
 You frequently want to analyze what the trend of the data is statistically, not just graphically. We can use a simple linear model and plot the result using `lm()`:
 
-```{r, echo=TRUE, message = F}
+```{r, echo=TRUE, message = F, results='hide'}
 plot(Sepal.Length  ~ Petal.Length, data = iris)
 
 summary(linmod <- lm(Sepal.Length ~ Petal.Length, data = iris))
+
 
 abline(linmod)
 ```
 
 ### Interpretation: 
-
 What is the slope of this line? How would you interpret it?
 
 
@@ -109,6 +109,8 @@ Back to graphics! The power of the base graphics package in R is control of each
     mar   - margins. Set to mar = rep(1, 4) for narrow margins all around.
     col   - colors, see colors() for full list or
     www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)
+
+`?par` for the full list.
 
 ## Basic graphics
 
@@ -156,7 +158,7 @@ bp <- barplot(means,
               ylab = "Mean sepal length (cm, ? 1 s.d.)",
               main = "Iris species sepal lengths",
               xaxt = "n", # suppress axis plotting here
-              ylim = c(0, 7.5))
+              ylim = c(0, 7.5)) 
 
 axis(side = 1, at = bp, 
      labels = paste("Iris", c("setosa", "versicolor","virginica")),
@@ -192,7 +194,7 @@ dev.print(device = jpeg, file = "Test graphic.jpg", height = 500, width = 800)
 
 ```
 
-## ggplot graphics
+## `ggplot` graphics
 
 A different model of graphics has recently become popular. `ggplots` use a different 'grammar' of graphics, and can be great for quickly making visually-appealing graphics. Mastering the control of each element can take time.
 
@@ -208,12 +210,12 @@ gp1
 ## ggplot graphics
 
 You can use one basic graph data set and do different versions of it. Two ways of visualizing a factor grouping:
-
+<!-- show but do not evaluate -->
 ```{r, eval = FALSE}
 gp1 + geom_point(aes(color = Species))
 gp1 + facet_wrap(~ Species)
 ```
-
+<!-- evaluatate but do not show -->
 ```{r, echo = FALSE, fig.height = 4.5}
 ex1 <- gp1 + geom_point(aes(color = Species))
 ex2 <- gp1 + facet_wrap(~ Species)
@@ -224,7 +226,8 @@ grid.arrange(ex1, ex2, ncol =2)
 
 These can be made interactive in an HTML document using `plot.ly`. See https://plot.ly/r/ if interested in trying this! You will need to download several packages, so this code will not work for you immediately:
 
-```{r, warning=F, message=F, eval =F}
+<!-- change eval = T for HTML version --> 
+```{r, warning=F, message=F, eval = T}
 library(plotly)
 ggplotly(ex1)
 ```
@@ -250,7 +253,7 @@ table(iris$Species)
 sink()
 ```
 
-Or output a data frame to a text file directly:
+Or, more commonly, output a data frame to a text file directly:
 ```{r}
 write.csv(iris[1:10,], file = "Iris Test.csv", row.names = F)
 ```
