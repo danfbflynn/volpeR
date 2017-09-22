@@ -3,18 +3,19 @@ title: 'Volpe R Course: Session 4, Communicating Results'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "9/26/2017"
 output:
-  slidy_presentation: default
-  ioslides_presentation:
-    incremental: no
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  ioslides_presentation:
+    incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
 
 ```{r setup, include=FALSE}
+setwd("~/git/volpeR/spring17") # needed for images/ folder
 knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
 library(ggplot2)
 library(gridExtra)
@@ -25,19 +26,16 @@ library(gridExtra)
 
 ### Last session:
 
-- Data manipulation
+- Data exploration
     + Aggregation
-    + Matching
-    + 
-  
+    + Merging and Matching
 
 ### Today: Communicating results 
 
 - Regular expression review
 - Basic graphics
 - `ggplot2` package
-- `Rmarkdown` introduction
-
+- Basic analysis
 
 
 ## Regular expressions
@@ -46,16 +44,25 @@ Quick digression to review material from last session!
 
 The use of `sub` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
 
-```{r}
-text1 <- c("Testing", "matching ", " and subustitutions")
+```{r, echo = F}
+text1 <- c("Testing", "matching ", " and substitutions")
+
+grep("testing", text1, ignore.case = TRUE) # Pattern matching
+
 sub(" +$", "", text1) # find and replace trailing whitespace
 grep("^ ", text1) # find elements which start with a whitespace
 grep("^[A-Z]", text1) # find elements which start with a capital letter
 ```
 
-### Exercise: regular expressions
+## Homework review 
 
-Use the `authors` data frame and come up with a two ways to select the rows containing "Australia" in the `nationality` column. 
+*Will review example solutions to the homework assignments here*
+
+### Make summary tables using `aggregate` and other functions
+
+### Make a subset using `grep`
+
+### Use `merge`
 
 
 
@@ -72,9 +79,26 @@ plot(Sepal.Length ~ Petal.Length, data = iris)
 plot(iris$Petal.Length, iris$Sepal.Length) # identical
 # plot(Petal.Length, Sepal.Length, data = iris) # fails
 ```
+## Basic graphics (plus some analysis)
+
+You frequently want to analyze what the trend of the data is statistically, not just graphically. We can use a simple linear model and plot the result using `lm()`:
+
+```{r, echo=TRUE, message = F}
+plot(Sepal.Length  ~ Petal.Length, data = iris)
+
+summary(linmod <- lm(Sepal.Length ~ Petal.Length, data = iris))
+
+abline(linmod)
+```
+
+### Interpretation: 
+
+What is the slope of this line? How would you interpret it?
+
 
 ## Basic graphics
-The power of the base graphics package in R is control of each element of the plot. The challenge is knowing how to exercise that control!
+Back to graphics! The power of the base graphics package in R is control of each element of the plot. The challenge is knowing how to exercise that control.
+
 `par()` sets graphics parameters and contains much of what you want to do. Highlights from `par`:
 
 
@@ -111,7 +135,8 @@ plot(Sepal.Width ~ Petal.Width,
 means <- tapply(iris$Sepal.Length, iris$Species, mean)
 sds <-  tapply(iris$Sepal.Length, iris$Species, sd)
 
-bp <- barplot(means)  # save the location of the bars as 'bp'
+# save the location of the bars as 'bp'
+bp <- barplot(means)
 
 arrows(bp, means+sds, # see ?arrows
        bp, means-sds, 
@@ -140,7 +165,7 @@ axis(side = 1, at = bp,
 ```{r, echo=FALSE}
 par(mar = c(3, 4, 3, 1)) # Narrowing margins
 bp <- barplot(means, 
-              ylab = "Mean sepal length (cm, ? 1 s.d.)",
+              ylab = "Mean sepal length (cm, ± 1 s.d.)",
               main = "Iris species sepal lengths",
               xaxt = "n",
               ylim = c(0, 7.5))
@@ -197,6 +222,13 @@ grid.arrange(ex1, ex2, ncol =2)
 
 ## Interactive 
 
+These can be made interactive in an HTML document using `plot.ly`. See https://plot.ly/r/ if interested in trying this! You will need to download several packages, so this code will not work for you immediately:
+
+```{r, warning=F, message=F, eval =F}
+library(plotly)
+ggplotly(ex1)
+```
+
 ## Tables in R
 
 Carrying out any analysis in R generates a lot of tables. A few options:
@@ -237,101 +269,11 @@ Select HTML or Word as the default output, and then try clicking 'knit'.
 You may need to `install.packages("rmarkdown")`
 
 
-<!-- ![You should get this!](images/snip4.png) --> 
-
-```{r, out.width = "200px", echo = F}
-knitr::include_graphics("images/snip4.png")
-```
-
-## R Markdown
-There are three parts to the `.Rmd` markdown file:
-
-### Header
-
-```{r, out.width = "90px", echo = F}
-knitr::include_graphics("images/Header.jpg")
-```
-
-### Markdown text
-
-```{r, out.height = "200px", echo = F}
-knitr::include_graphics("images/Text.jpg")
-```
-
-### R code
-
-```{r, out.width = "50px", echo = F}
-knitr::include_graphics("images/Rcode.jpg")
-```
-
-## Tables in Markdown
-
-The simplest way to integrate tables in Markdown is to format your data frame using the `kable` function. Other options include `pander()` in the `pander` library. 
-
-```{r, out.width = "250px", echo = F}
-knitr::include_graphics("images/TableKable.jpg")
-
-```
-
-## Excercise: Generate report
-
-### Start a Markdown report
-
-In the remaining time, start a report using R Markdown:
-
-- Start a new Markdown file
-- Source or copy in your project analysis
-- Present key findings graphically
-    + Try to use both base graphics and `ggplot` 
-- Add explanatory text.
-    + Use font embellishments as necessary
-
-## More reporting options
-These three additional options are all sophisticated tools, requiring substantial up-front time investment. 
-
-### Sweave / LaTeX 
-
-The gold standard for publishing repeatable research is LaTeX (often written as \LaTeX). Rmarkdown is based off of LaTeX in many ways. R code can be 'woven' in to LaTeX using `Sweave` syntax, which  Rmarkdown emulates in a simplified way.
-
-### Shiny
-Dynamic reports can be generated with `Shiny`:
-http://shiny.rstudio.com/
-
-
-### Flexdashboards
-http://rmarkdown.rstudio.com/flexdashboard/
-
-http://rpubs.com/dflynnvolpe/270463
-
-## Homework review: Loops
-Loop to generate random subsets of your data:
-
-```{r}
-# Get 10 samples of data from each species:
-sampx <- vector()
-for(i in levels(iris$Species)){
-  iris.sp.i <- iris[iris$Species == i,]
-  sampx <- rbind(sampx, iris.sp.i[sample(rownames(iris.sp.i), 10),])
-  }
-```
-
-Loop over rows in a data frame and perform some operation:
-```{r}
-# Subtract mean from each 
-means <- apply(iris[,1:4], 2, mean)
-newdat <- vector()
-for(i in 1:nrow(iris)){
-  newdat.x <- iris[i,1:4] - means
-  newdat <- rbind(newdat, data.frame(newdat.x, iris[i,5]))
-  }
-# Examine it: hist(newdat[,2]); hist(iris[,2])
-```
-
 
 
 ## Homework review: Outliers
 
-Stats skill: test your data for outliers, using your models from Homework 2. 
+*Time permitting, we will go back to the Hubway data and examine the question of outliers*
 
 We will review `tripduration` outliers from the Hubway data.
 
