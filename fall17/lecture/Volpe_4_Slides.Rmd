@@ -3,19 +3,18 @@ title: 'Volpe R Course: Session 4, Communicating Results'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "9/26/2017"
 output:
-  slidy_presentation: default
-  ioslides_presentation:
-    incremental: no
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  ioslides_presentation:
+    incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
 
 ```{r setup, include=FALSE}
-setwd("~/git/volpeR/spring17") # needed for images/ folder
 knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
 library(ggplot2)
 library(gridExtra)
@@ -56,7 +55,7 @@ grep("^[A-Z]", text1) # find elements which start with a capital letter
 
 ## Homework review 
 
-*Will review example solutions to the homework assignments here*
+*We will review example solutions to the homework assignments here*
 
 ### Make summary tables using `aggregate` and other functions
 
@@ -88,13 +87,28 @@ plot(Sepal.Length  ~ Petal.Length, data = iris)
 
 summary(linmod <- lm(Sepal.Length ~ Petal.Length, data = iris))
 
-
 abline(linmod)
 ```
 
 ### Interpretation: 
 What is the slope of this line? How would you interpret it?
 
+## Basic graphics (plus some analysis)
+
+We have often looked at boxplots for categorical data. The analysis that corresponds to a simple boxplot is an "Analysis of Variance" or ANOVA. In `R`, you can do this analysis with the `aov` function:
+
+```{r}
+
+plot(Petal.Length ~ Species,
+     data = iris)
+```
+```{r, results = 'hide'}
+summary(aovmod <- aov(Petal.Length ~ Species, data = iris))
+coef(aovmod)
+```
+
+### Interpretation:
+What is the model estimate for the mean value of *Iris versicolor* petal lengths? 
 
 ## Basic graphics
 Back to graphics! The power of the base graphics package in R is control of each element of the plot. The challenge is knowing how to exercise that control.
@@ -184,7 +198,7 @@ axis(side = 1, at = bp,
 
 Save your graphics typically as pdf or jpeg. You can do this by putting `pdf()` and `dev.off()` around your code, or by using `dev.print()`.
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 pdf("Test graphic.pdf", width = 4, height = 6)
 plot(1:10, pch = 1:10, col = 1:10, cex = 2)
 dev.off()
@@ -227,7 +241,7 @@ grid.arrange(ex1, ex2, ncol =2)
 These can be made interactive in an HTML document using `plot.ly`. See https://plot.ly/r/ if interested in trying this! You will need to download several packages, so this code will not work for you immediately:
 
 <!-- change eval = T for HTML version --> 
-```{r, warning=F, message=F, eval = T}
+```{r, warning=F, message=F, eval = F}
 library(plotly)
 ggplotly(ex1)
 ```
@@ -270,8 +284,6 @@ Go to File > New File ... > R Markdown
 Select HTML or Word as the default output, and then try clicking 'knit'.
 
 You may need to `install.packages("rmarkdown")`
-
-
 
 
 ## Homework review: Outliers
