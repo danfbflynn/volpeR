@@ -37,11 +37,48 @@ library(gridExtra)
 - Basic analysis
 
 
+
+
+## Homework review 
+
+*We will review example solutions to the homework assignments here*
+
+### Make summary tables using `aggregate` and other functions
+
+```{r, eval = F}
+aggregate(hub$tripduration,
+          by = list(hub$usertype, hub$bikeid), FUN = mean)
+
+tapply (hub$bikeid, hub$tripduration, mean)
+```
+
+### Make a subset using `grep`
+
+```{r, eval = F}
+Kendall.stations <- grep("Kendall" , hub$start.station.name)
+merge1.kendall <- hub[Kendall.stations,]
+```
+
+### Use `merge`
+
+```{r, eval=F}
+track1 <- read.csv("Homework 3 1 MUI.csv") # first dataset
+track2 <- read.csv("Homework 3 2 MUI.csv") # second dataset
+
+names (track1) # check header for both dataset
+merge (track1, track2, by.x ="ft1", by.y = "ft2", all = T) # merge two data frames by track disatance
+
+# Match two track geometry dataset
+t1 <- match (track1$MP1, track2$MP2) # combined two dataset
+
+t2 <- data.frame (track1, track2[t1,])
+```
+
 ## Regular expressions
 
 Quick digression to review material from last session!
 
-The use of `sub` above is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
+The use of `sub` last session is an example of *regular expression*. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with `grep` and `sub` being two of the most common ones. `regexpr` also provides additional options for those familiar with Perl or Python.
 
 ```{r, echo = T, results='hide'}
 text1 <- c("Testing", "matching ", " and substitutions")
@@ -52,17 +89,6 @@ sub(" +$", "", text1) # find and replace trailing whitespace
 grep("^ ", text1) # find elements which start with a whitespace
 grep("^[A-Z]", text1) # find elements which start with a capital letter
 ```
-
-## Homework review 
-
-*We will review example solutions to the homework assignments here*
-
-### Make summary tables using `aggregate` and other functions
-
-### Make a subset using `grep`
-
-### Use `merge`
-
 
 
 ## Basic graphics
