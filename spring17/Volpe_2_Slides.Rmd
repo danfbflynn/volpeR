@@ -3,11 +3,11 @@ title: 'Volpe R Course: Session 2'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "3/30/2017"
 output:
-  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
@@ -141,7 +141,7 @@ chisq.test(chidat$Number)
 
 ## Comparing frequencies of events
 In the case that the expected values are not identical, you can specify that in the `chisq.test` function. 
-For example, perhaps the course is an upper-level couse, and freshmen are expected to be only 15% of the registered students. We can specify the expected proprotion as a vector `p`
+For example, perhaps the course is an upper-level course, and freshmen are expected to be only 15% of the registered students. We can specify the expected proportion as a vector `p`
 
 ```{r}
 chisq.test(chidat$Number, p = c(0.15, 0.25, 0.30, 0.30))
@@ -195,7 +195,7 @@ house.crime <- lm(medv ~ crim, data = Boston)
 summary(house.crime)
 ```
 ## Regression
-There is a lot to unpack with these results. Recall that regression minimizes the sum of squares bewteen the observed values and the expected values. This method is called *Ordinary Least Squares (OLS)*, finding the slope coefficient which best matches the predictor and response variables.
+There is a lot to unpack with these results. Recall that regression minimizes the sum of squares between the observed values and the expected values. This method is called *Ordinary Least Squares (OLS)*, finding the slope coefficient which best matches the predictor and response variables.
 
 The key values to look at in this case are the **Estimate** for the predictor variable, `crim`, as well as for the intercept. We also want to know if these results are significantly different from the null hypothesis of no relationship.
 ```{r}
@@ -248,7 +248,7 @@ abline(nox.house)
 ```
 
 ## Regression 
-We can use these coeffients to test scenarios. For example what if NOx concentrations are reduced by half?
+We can use these coefficients to test scenarios. For example what if NOx concentrations are reduced by half?
 
 
 1/2 x mean NOx concentration x slope of relationship + intercept.
@@ -279,7 +279,7 @@ Carry out a multiple regression for median house price and two predictor variabl
 
 
 ## Exercise 2.2
-How do we compare models? If we have the same response data in each model, we can compare using an index called AIC, Akaike Informaiton Criterion. Of course you can look at $R^{2}$ as well, but there are pitfalls with only looking at $R^{2}$. 
+How do we compare models? If we have the same response data in each model, we can compare using an index called AIC, Akaike Information Criterion. Of course you can look at $R^{2}$ as well, but there are pitfalls with only looking at $R^{2}$. 
 
 
 ```{r}
@@ -345,7 +345,7 @@ boxplot(crim ~ house.size, data = Boston, log = "y")
 ## Analysis of Variance (ANOVA): compare means of more than two groups
 
 Do we need to transform the data?
-As for the regresssion models above, the important point is that the *residuals of the model need to be normally distributed*. It is not important if the input data themselves are normal or not.
+As for the regression models above, the important point is that the *residuals of the model need to be normally distributed*. It is not important if the input data themselves are normal or not.
 
 ```{r, fig.height=4}
 par(mfrow = c(1,2))

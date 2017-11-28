@@ -41,7 +41,7 @@ Also, we will cover a few additional topics:
 
 ## Homework: Data analysis
 
-Homeworks received before today show great work! Some common themes:
+Homework received before today show great work! Some common themes:
 
 - How to deal with outliers
 - How to do repeated processing or analysis steps
@@ -101,7 +101,7 @@ boxplot(crim ~ house.size, data = Boston, log = "y")
 ## Analysis of Variance (ANOVA): compare means of more than two groups
 
 Do we need to transform the data?
-As for the regresssion models above, the important point is that the *residuals of the model need to be normally distributed*. It is not important if the input data themselves are normal or not.
+As for the regression models above, the important point is that the *residuals of the model need to be normally distributed*. It is not important if the input data themselves are normal or not.
 
 ```{r, fig.height=4}
 par(mfrow = c(1,2))
@@ -277,7 +277,7 @@ An alternative test can be how much the *residuals* lie outside the predicted ra
 $e_{i} = y_{i} - \hat{y}_{i}$
 
 Where $\hat{y}_{i}$ represents the *i*th predicted value of *y*.
-The magnitude of the resiudals depends on the units of the dependent variable *y*. Dividing the residuals by the standard deviation of the data is called 'Studentizing' and shows values on a unit-less scale which can easily be tested. Values greather than 3 are often considered outliers.
+The magnitude of the residuals depends on the units of the dependent variable *y*. Dividing the residuals by the standard deviation of the data is called 'Studentizing' and shows values on a unit-less scale which can easily be tested. Values greater than 3 are often considered outliers.
 
 ```{r, results='hide'}
 studentized.resid <- residuals(m1)/(summary(m1)$sigma) 

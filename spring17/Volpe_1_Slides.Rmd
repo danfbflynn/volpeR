@@ -1,19 +1,19 @@
 ---
 title: 'Volpe R Course: Day 1'
 author: |
-  | Instructors: Don Fisher, Dan Flynn, Jessie Yang
   |
-  | Course webpage: http://bit.ly/volpeR 
   |
-  | Make this directory: H:/R
   
+  | Instructors: Don Fisher, Dan Flynn, Jessie Yang
+  | Course webpage: http://bit.ly/volpeR 
+  | Make this directory: H:/R
 date: "3/17/2017"
 output:
-  slidy_presentation: default
-  ioslides_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
+  ioslides_presentation: default
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
@@ -210,7 +210,7 @@ That was not a good dataframe for R, because values of the response variable app
 ```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 tabl <- "
 
-| response     | treatment  |
+| treatment     | value  |
 |:-----------:|:-----------:|:-----------:|
 | control | 6.1 |
 | control | 5.9 |
@@ -228,16 +228,16 @@ pander(tabl)
 If you already had data in vector format, you could create a data frame like so:
 
 ```{r}
-response <- rep(c("control", "treatment1", "treatment2"), 
+treatment <- rep(c("control", "treatment1", "treatment2"), 
                 each =  2)
 values <- c(6.1, 5.9, 6.3, 6.2, 7.1, 8.2)
 
-(mydataframe <- data.frame(response, treatment = values))
+(mydataframe <- data.frame(treatment, values))
 
 ```
 
 ### Mini-exercise:
-What is the `rep()` function? What happends if `each` is changed to `times`? Look it up in the help.
+What is the `rep()` function? What happens if `each` is changed to `times`? Look it up in the help.
 
 <!-- They should use ?rep or help(rep) -->
 
@@ -396,6 +396,30 @@ Try improving this figure by adding some terms: `xlab`, `ylab`, and `main`.
 Next, look at the relationship between MPG and vehicle weight.:
 ```{r, fig.width=4, fig.height=3, fig.align='center'}
 plot(mpg ~ wt, data = cars)
+```
+
+
+## Working with packages
+
+R is an open-source software, meaning anyone can see the source code and make suggestions and extensions. New modules of code are constantly being built, and these *packages* can be installed using the following commands:
+
+```{r, eval = F}
+install.packages("ggplot2") # a common graphing package
+library(ggplot2)
+```
+
+When you see `library(xxx)` in someone else's code, you may need to first `install.packages("xxx")` before you can run that command.
+
+
+Try it:
+`qplot(wt, mpg, data = cars, color = am)`
+
+```{r, fig.width=3.5, fig.height=1.5, echo=FALSE, fig.align='center'}
+library(ggplot2)
+par(mar = c(3, 3, 4, 0),xpd =T)
+#ggplot(cars) + aes(wt, mpg, color = am) + geom_point()
+# coloring by automatic/manual
+qplot(wt, mpg, data = cars, color = am) # equivalent
 ```
 
 

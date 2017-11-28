@@ -51,13 +51,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="slide titlepage">
   <h1 class="title">Volpe R Course: Session 5, Data Manipulation</h1>
   <p class="author">
-<p>Instructors: Don Fisher, Dan Flynn, Jessie Yang<br />
-Course webpage: <a href="http://bit.ly/volpeR" class="uri">http://bit.ly/volpeR</a></p>
+<div style="white-space: pre-line;">Instructors: Don Fisher, Dan Flynn, Jessie Yang
+Course webpage: <a href="http://bit.ly/volpeR" class="uri">http://bit.ly/volpeR</a></div>
   </p>
   <p class="date">5/11/2017</p>
 </div>
 <div id="overview" class="slide section level2">
-<h1>Overview</h1>
+<h2>Overview</h2>
 <h3 id="last-session-communicating-results">Last session: Communicating results</h3>
 <ul>
 <li>Basic graphics</li>
@@ -73,7 +73,7 @@ Course webpage: <a href="http://bit.ly/volpeR" class="uri">http://bit.ly/volpeR<
 </ul>
 </div>
 <div id="merging-data-frames" class="slide section level2">
-<h1>Merging data frames</h1>
+<h2>Merging data frames</h2>
 <p>Merging data between different sources requires having a common column name or row name. The two functions most often used are <code>merge</code> and <code>match</code>. Type the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">example</span>(merge)
 authors
@@ -82,25 +82,25 @@ books
 <span class="kw">merge</span>(authors, books, <span class="dt">by.x =</span> <span class="st">&quot;surname&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;name&quot;</span>) 
 <span class="co"># and do it again again, adding `all.y = TRUE`</span></code></pre></div>
 <p>We can use match to carry out a similar operation. Match is more flexible than merge, and therefore more difficult to use!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">match</span>(authors$surname, books$name) <span class="co"># returns index for the second element which match the first</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">match</span>(authors<span class="op">$</span>surname, books<span class="op">$</span>name) <span class="co"># returns index for the second element which match the first</span>
 
 books[m1,]
 
 newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>(authors, books[m1,])</code></pre></div>
 </div>
 <div id="merging-data-frames-1" class="slide section level2">
-<h1>Merging data frames</h1>
+<h2>Merging data frames</h2>
 <p><code>match</code> can also be used in many other contexts, besides merging data frames. Additional functions for matching to know are <code>which</code>, <code>grep</code>, and <code>intersect</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(books$name ==<span class="st"> &quot;Ripley&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which</span>(books<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;Ripley&quot;</span>)</code></pre></div>
 <pre><code>## [1] 4 5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&quot;Rip&quot;</span>, books$name) <span class="co"># partial string matching</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&quot;Rip&quot;</span>, books<span class="op">$</span>name) <span class="co"># partial string matching</span></code></pre></div>
 <pre><code>## [1] 4 5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">intersect</span>(books$name, authors$surname) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">intersect</span>(books<span class="op">$</span>name, authors<span class="op">$</span>surname) </code></pre></div>
 <pre><code>## [1] &quot;Tukey&quot;    &quot;Venables&quot; &quot;Tierney&quot;  &quot;Ripley&quot;   &quot;McNeil&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unique shared elements, order unimportant.</span></code></pre></div>
 </div>
 <div id="merging-data-frames-2" class="slide section level2">
-<h1>Merging data frames</h1>
+<h2>Merging data frames</h2>
 <p>We will work with two data files, on the course Google Drive, <a href="http://bit.ly/volpeR" class="uri">http://bit.ly/volpeR</a>: - <code>US_State_Avg_Ann_Temp.csv</code> - <code>Net_generation_for_all_fuels_(utility-scale)_monthly.csv</code></p>
 <p>Download them and read them in. For the Fuel generation file, downloaded from the Energy Information Administration, we need to skip several lines at the top:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">avg.temp &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/US_State_Avg_Ann_Temp.csv&quot;</span>)
@@ -115,7 +115,7 @@ net.fuel &lt;-<span class="st"> </span>
 <span class="kw">names</span>(net.fuel)</code></pre></div>
 </div>
 <div id="regular-expressions" class="slide section level2">
-<h1>Regular expressions</h1>
+<h2>Regular expressions</h2>
 <p>The use of <code>sub</code> above is an example of <em>regular expression</em>. These are very flexible and form the basis for all search engines. In R, there are number of ways to use regular expressions, with <code>grep</code> and <code>sub</code> being two of the most common ones. <code>regexpr</code> also provides additional options for those familiar with Perl or Python.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Testing&quot;</span>, <span class="st">&quot;matching &quot;</span>, <span class="st">&quot; and subustitutions&quot;</span>)
 <span class="kw">sub</span>(<span class="st">&quot; +$&quot;</span>, <span class="st">&quot;&quot;</span>, text1) <span class="co"># find and replace trailing whitespace</span></code></pre></div>
@@ -128,43 +128,43 @@ net.fuel &lt;-<span class="st"> </span>
 <p>Use the <code>authors</code> data frame and come up with a two ways to select the rows containing “Australia” in the <code>nationality</code> column.</p>
 </div>
 <div id="merging-data-frames-3" class="slide section level2">
-<h1>Merging data frames</h1>
+<h2>Merging data frames</h2>
 <p>Using the example data, let’s reshape and merge the data together.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape)
 net.melt &lt;-<span class="st"> </span><span class="kw">melt</span>(net.fuel)</code></pre></div>
 <pre><code>## Using Month as id variables</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(net.melt) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Month&quot;</span>, <span class="st">&quot;Region&quot;</span>, <span class="st">&quot;NetFuel&quot;</span>)
 
-avg.temp$Region &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>, avg.temp$Region) 
+avg.temp<span class="op">$</span>Region &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>, avg.temp<span class="op">$</span>Region) 
 <span class="co"># gsub matches multiple instances</span>
 
 fuel.temp &lt;-<span class="st"> </span><span class="kw">merge</span>(avg.temp, net.melt, <span class="dt">all.y =</span> T)</code></pre></div>
 </div>
 <div id="aggregating-data" class="slide section level2">
-<h1>Aggregating data</h1>
+<h2>Aggregating data</h2>
 <p>Three functions are most useful for aggregating data: <code>aggregate</code>, <code>tapply</code>, and <code>apply</code>. Using the merged file, create mean net fuel consumption tables:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Two index vectors, using aggregate</span>
-<span class="kw">aggregate</span>(fuel.temp$NetFuel, 
-          <span class="dt">by =</span> <span class="kw">list</span>(fuel.temp$Region, fuel.temp$State), <span class="dt">FUN =</span> mean)
+<span class="kw">aggregate</span>(fuel.temp<span class="op">$</span>NetFuel, 
+          <span class="dt">by =</span> <span class="kw">list</span>(fuel.temp<span class="op">$</span>Region, fuel.temp<span class="op">$</span>State), <span class="dt">FUN =</span> mean)
 
 <span class="co"># Or with only one index vector, using tapply</span>
-<span class="kw">tapply</span>(fuel.temp$NetFuel, fuel.temp$Region, mean)</code></pre></div>
+<span class="kw">tapply</span>(fuel.temp<span class="op">$</span>NetFuel, fuel.temp<span class="op">$</span>Region, mean)</code></pre></div>
 <p>Use apply to look across multiple columns or rows</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(fuel.temp[<span class="dv">3</span>:<span class="dv">4</span>],     <span class="co"># data frame to look at (should be two-dimensional)</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(fuel.temp[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>],     <span class="co"># data frame to look at (should be two-dimensional)</span>
       <span class="dv">2</span>,                  <span class="co"># 1 is for rows, 2 is for columns</span>
       mean)               <span class="co"># Function</span></code></pre></div>
 <h3 id="exercise">Exercise:</h3>
 <p>Create a table of <em>annual</em> net fuel consumption for each region.</p>
 </div>
 <div id="merging-data-for-spatial-analysis" class="slide section level2">
-<h1>Merging data for spatial analysis</h1>
+<h2>Merging data for spatial analysis</h2>
 <p>One application of the merge data is to plot it spatially.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
 <span class="kw">map</span>(<span class="st">'state'</span>) 
 <span class="co"># Plot avg temp </span>
-statenames  &lt;-<span class="st"> </span><span class="kw">map</span>(<span class="st">'state'</span>, <span class="dt">plot =</span> <span class="ot">FALSE</span>)$names
-statematches &lt;-<span class="st"> </span><span class="kw">match</span>(statenames, <span class="kw">tolower</span>(avg.temp$State))
-tempmatches &lt;-<span class="st"> </span>avg.temp$Avg.degF[statematches]
+statenames  &lt;-<span class="st"> </span><span class="kw">map</span>(<span class="st">'state'</span>, <span class="dt">plot =</span> <span class="ot">FALSE</span>)<span class="op">$</span>names
+statematches &lt;-<span class="st"> </span><span class="kw">match</span>(statenames, <span class="kw">tolower</span>(avg.temp<span class="op">$</span>State))
+tempmatches &lt;-<span class="st"> </span>avg.temp<span class="op">$</span>Avg.degF[statematches]
 
 colorpal &lt;-<span class="st"> </span><span class="kw">heat.colors</span>(<span class="dv">100</span>)
 
@@ -177,7 +177,7 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 <p>Look at the states where the colors were not matched. Why did the names not match? Compare <code>statenames</code> and <code>avg.temp$State</code>.</p>
 </div>
 <div id="saving-your-work" class="slide section level2">
-<h1>Saving your work</h1>
+<h2>Saving your work</h2>
 <p>After doing all this work, you will want to save the results. You can save R objects in your current workspace to file type called <code>.RData</code>. Then you can load these R objects back in at a later session, without having to carry out this preparation work.</p>
 <p>For example, to save all objects in the current workspace:</p>
 <p><code>save(list = ls(), file = &quot;My_Prepped_Data.RData&quot;)</code></p>
@@ -188,12 +188,12 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 <p>You can also consider making a script that does all this preparation work, and save it as a file called something like <code>Analysis Prep.R</code>. Then, in your data analysis script or <code>.Rmd</code> file, you can automatically run that script by inserting the command: <code>source('Analysis Prep.R')</code>.</p>
 </div>
 <div id="explaining-your-reports" class="slide section level2">
-<h1>Explaining your reports!</h1>
+<h2>Explaining your reports!</h2>
 <p>Given remaining time, take a few minutes to work with the person next to you on your Markdown report.</p>
 <p>Show them the report you generated for this session (using <code>.Rmd</code>) and explain the story it tells. Show them how you used Markdown in your case, and get their feedback on elements to edit or improve. Leave enough time for both people to present.</p>
 </div>
 <div id="homework" class="slide section level2">
-<h1>Homework</h1>
+<h2>Homework</h2>
 <p>Now that you have mastered all these elements of R, finalize your Markdown report to present a compelling story. A few of you will be asked to present these analyses in the final session.</p>
 <p>The last session will also briefly cover two statistical topics which seem to be of interest for several of you:</p>
 <ul>
@@ -202,20 +202,20 @@ temp.colors &lt;-<span class="st"> </span>colorpal[<span class="kw">round</span>
 </ul>
 </div>
 <div id="homework-review-loops" class="slide section level2">
-<h1>Homework review: Loops</h1>
+<h2>Homework review: Loops</h2>
 <p>Loop to generate random subsets of your data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 10 samples of data from each species:</span>
 sampx &lt;-<span class="st"> </span><span class="kw">vector</span>()
-for(i in <span class="kw">levels</span>(iris$Species)){
-  iris.sp.i &lt;-<span class="st"> </span>iris[iris$Species ==<span class="st"> </span>i,]
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">levels</span>(iris<span class="op">$</span>Species)){
+  iris.sp.i &lt;-<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">==</span><span class="st"> </span>i,]
   sampx &lt;-<span class="st"> </span><span class="kw">rbind</span>(sampx, iris.sp.i[<span class="kw">sample</span>(<span class="kw">rownames</span>(iris.sp.i), <span class="dv">10</span>),])
   }</code></pre></div>
 <p>Loop over rows in a data frame and perform some operation:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Subtract mean from each </span>
-means &lt;-<span class="st"> </span><span class="kw">apply</span>(iris[,<span class="dv">1</span>:<span class="dv">4</span>], <span class="dv">2</span>, mean)
+means &lt;-<span class="st"> </span><span class="kw">apply</span>(iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">2</span>, mean)
 newdat &lt;-<span class="st"> </span><span class="kw">vector</span>()
-for(i in <span class="dv">1</span>:<span class="kw">nrow</span>(iris)){
-  newdat.x &lt;-<span class="st"> </span>iris[i,<span class="dv">1</span>:<span class="dv">4</span>] -<span class="st"> </span>means
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(iris)){
+  newdat.x &lt;-<span class="st"> </span>iris[i,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>means
   newdat &lt;-<span class="st"> </span><span class="kw">rbind</span>(newdat, <span class="kw">data.frame</span>(newdat.x, iris[i,<span class="dv">5</span>]))
   }
 <span class="co"># Examine it: hist(newdat[,2]); hist(iris[,2])</span></code></pre></div>
@@ -226,7 +226,7 @@ for(i in <span class="dv">1</span>:<span class="kw">nrow</span>(iris)){
     (function () {
       var script = document.createElement("script");
       script.type = "text/javascript";
-      script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
       document.getElementsByTagName("head")[0].appendChild(script);
     })();
   </script>

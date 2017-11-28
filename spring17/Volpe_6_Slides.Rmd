@@ -3,18 +3,18 @@ title: 'Volpe R Course: Session 6, Expanded Statistical Toolbox'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "5/25/2017"
 output:
-  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
-setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/lecture")
+setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/spring17")
 ```
 
 ## Overview 
@@ -119,8 +119,8 @@ ggplot(fuel.temp) + aes(avgt, NetFuel, color = Region) +
 
 We can use the hierarchical modeling framework to look at repeated measures or time series. 
 
-Example: subjects are deprived of sleep and are measureed for their reaction times at increasing intervals  (see `?sleepstudy`). How much does sleep deprivation matter?
-We want to track each subject seperately, then pool the results to come up with general conclusions.
+Example: subjects are deprived of sleep and are measured for their reaction times at increasing intervals  (see `?sleepstudy`). How much does sleep deprivation matter?
+We want to track each subject separately, then pool the results to come up with general conclusions.
 ```{r, results = 'hide'}
 rm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 summary(rm1)
@@ -138,7 +138,7 @@ sjt.lmer(rm1)
 ## Repeated measures modeling
 
 ### Exercise: 
-Try to write models that estimate the trends in 1. net fuel consumption by month, and 2. average temeprature by year, taking into account regional differences.
+Try to write models that estimate the trends in 1. net fuel consumption by month, and 2. average temperature by year, taking into account regional differences.
 
 ```{r}
 # Modeling net fuel by Region and month

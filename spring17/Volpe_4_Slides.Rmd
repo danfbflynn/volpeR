@@ -3,13 +3,13 @@ title: 'Volpe R Course: Session 4, Communicating Results'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "4/27/2017"
 output:
-  slidy_presentation: default
-  ioslides_presentation:
-    incremental: no
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  ioslides_presentation:
+    incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---

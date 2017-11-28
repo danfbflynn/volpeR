@@ -3,18 +3,18 @@ title: 'Volpe R Course: Session 5, Data Manipulation'
 author: "| Instructors: Don Fisher, Dan Flynn, Jessie Yang \n| Course webpage: http://bit.ly/volpeR\n"
 date: "5/11/2017"
 output:
-  slidy_presentation: default
   beamer_presentation:
     includes:
       in_header: beamertemp.tex
     incremental: no
+  slidy_presentation: default
 fontsize: 8pt
 colortheme: dolphin
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height = 3.5)
-setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/lecture")
+setwd("C:/Users/daniel.flynn.ctr/Documents/git/volpeR/spring17")
 ```
 
 
